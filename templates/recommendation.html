@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Recommendation</title>
+    <!-- Include Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Include FontAwesome CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Custom CSS for weather page -->
+    <style>
+        body {
+            background-color: #f5f5f5;
+        }
+
+        .container {
+            margin-top: 30px;
+        }
+
+        .card {
+            background-color: #fff;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-title {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .card-text {
+            font-size: 18px;
+        }
+
+        .tracks-list {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .tracks-list li {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 10px;
+        }
+
+        .song-number {
+            font-weight: bold;
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+
+        .circle-background {
+            width: 30px;
+            /* Adjust the size as needed */
+            height: 30px;
+            /* Adjust the size as needed */
+            background-color: #007bff;
+            /* Background color of the circle (blue) */
+            border-radius: 50%;
+            /* Make it a circle */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: background-color 0.3s ease;
+            /* Add a smooth color transition */
+        }
+
+        .play-icon {
+            color: white;
+            /* Color of the play icon */
+            font-size: 18px;
+            /* Adjust the size of the play icon as needed */
+        }
+
+        /* Remove text decoration on anchor elements */
+        a.play-button {
+            text-decoration: none;
+        }
+
+        /* Hover effect to change the circle background color */
+        .circle-background:hover {
+            background-color: #ff5722;
+            /* Change the background color on hover (orange) */
+        }
+
+        /* Align the song title to the top of the cell */
+        td strong {
+            display: block;
+        }
+
+        td {
+            vertical-align: top;
+        }
+
+        .music-player {
+            width: 300px;
+            height: 380px;
+            margin-top: 20px;
+            padding: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title text-center">Current Weather in {{weather['location']}}</h5>
+                        <p class="card-text text-center">
+                            Condition:
+                            {% set condition_lower = weather['condition'].lower() %}
+
+                            {% if condition_lower == 'sunny' %}
+                            <i class="fas fa-sun"></i> Sunny
+                            {% elif condition_lower == 'mostly sunny' %}
+                            <i class="fas fa-cloud-sun"></i> Mostly Sunny
+                            {% elif condition_lower == 'partly sunny' %}
+                            <i class="fas fa-cloud-sun"></i> Partly Sunny
+                            {% elif condition_lower == 'intermittent clouds' %}
+                            <i class="fas fa-cloud"></i> Intermittent Clouds
+                            {% elif condition_lower == 'hazy sunshine' %}
+                            <i class="fas fa-smog"></i> Hazy Sunshine
+                            {% elif condition_lower == 'mostly cloudy' %}
+                            <i class="fas fa-cloud"></i> Mostly Cloudy
+                            {% elif condition_lower == 'some clouds' %}
+                            <i class="fas fa-cloud"></i> Some Clouds
+                            {% elif condition_lower == 'cloudy' %}
+                            <i class="fas fa-cloud"></i> Cloudy
+                            {% elif condition_lower == 'dreary (overcast)' %}
+                            <i class="fas fa-cloud"></i> Dreary (Overcast)
+                            {% elif condition_lower == 'fog' %}
+                            <i class="fas fa-smog"></i> Fog
+                            {% elif condition_lower == 'showers' %}
+                            <i class="fas fa-cloud-showers-heavy"></i> Showers
+                            {% elif condition_lower == 'mostly cloudy w/ showers' %}
+                            <i class="fas fa-cloud-showers-heavy"></i> Mostly Cloudy w/ Showers
+                            {% elif condition_lower == 'partly sunny w/ showers' %}
+                            <i class="fas fa-cloud-sun-rain"></i> Partly Sunny w/ Showers
+                            {% elif condition_lower == 't-storms' %}
+                            <i class="fas fa-bolt"></i> T-Storms
+                            {% elif condition_lower == 'mostly cloudy w/ t-storms' %}
+                            <i class="fas fa-bolt"></i> Mostly Cloudy w/ T-Storms
+                            {% elif condition_lower == 'partly sunny w/ t-storms' %}
+                            <i class="fas fa-cloud-sun"></i> Partly Sunny w/ T-Storms
+                            {% elif condition_lower == 'rain' %}
+                            <i class="fas fa-cloud-rain"></i> Rain
+                            {% elif condition_lower == 'flurries' %}
+                            <i class="fas fa-snowflake"></i> Flurries
+                            {% elif condition_lower == 'mostly cloudy w/ flurries' %}
+                            <i class="fas fa-snowflake"></i> Mostly Cloudy w/ Flurries
+                            {% elif condition_lower == 'partly sunny w/ flurries' %}
+                            <i class="fas fa-cloud-sun"></i> Partly Sunny w/ Flurries
+                            {% elif condition_lower == 'snow' %}
+                            <i class="fas fa-snowflake"></i> Snow
+                            {% elif condition_lower == 'mostly cloudy w/ snow' %}
+                            <i class="fas fa-snowflake"></i> Mostly Cloudy w/ Snow
+                            {% elif condition_lower == 'ice' %}
+                            <i class="fas fa-icicles"></i> Ice
+                            {% elif condition_lower == 'sleet' %}
+                            <i class="fas fa-cloud-meatball"></i> Sleet
+                            {% elif condition_lower == 'freezing rain' %}
+                            <i class="fas fa-icicles"></i> Freezing Rain
+                            {% elif condition_lower == 'rain and snow' %}
+                            <i class="fas fa-cloud-rain"></i><i class="fas fa-snowflake"></i> Rain and Snow
+                            {% elif condition_lower == 'hot' %}
+                            <i class="fas fa-thermometer-full"></i> Hot
+                            {% elif condition_lower == 'cold' %}
+                            <i class="fas fa-thermometer-empty"></i> Cold
+                            {% elif condition_lower == 'windy' %}
+                            <i class="fas fa-wind"></i> Windy
+                            {% elif condition_lower == 'clear' %}
+                            <i class="fas fa-sun"></i> Clear
+                            {% elif condition_lower == 'mostly clear' %}
+                            <i class="fas fa-cloud-sun"></i> Mostly Clear
+                            {% elif condition_lower == 'partly cloudy' %}
+                            <i class="fas fa-cloud-sun"></i> Partly Cloudy
+                            {% elif condition_lower == 'intermittent clouds' %}
+                            <i class="fas fa-cloud"></i> Intermittent Clouds
+                            {% elif condition_lower == 'hazy moonlight' %}
+                            <i class="fas fa-cloud-moon"></i> Hazy Moonlight
+                            {% endif %}
+                        </p>
+                        <p class="card-text text-center">Temperature: {{ weather['temperature'] }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-4 justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header">
+                        <ul class="nav nav-tabs card-header-tabs">
+                            <li class="nav-item">
+                                <a class="nav-link active" id="top-tracks-tab" data-toggle="tab" href="#top-tracks">Top
+                                    50 Tracks</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="recommended-tracks-tab" data-toggle="tab"
+                                    href="#recommended-tracks">Recommended Tracks</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="card-body">
+                        <div class="tab-content">
+                            <!-- Tab content for Top 5 Tracks -->
+                            <div class="tab-pane fade show active" id="top-tracks">
+                                <ol class="tracks-list">
+                                    {% for track in top_tracks %}
+                                    <li><strong>{{ loop.index }}. {{ track['song'] }}</strong> Artist(s): {{
+                                        track['artist'] }}</li>
+                                    {% endfor %}
+                                </ol>
+                            </div>
+                            <div class="tab-pane fade" id="recommended-tracks">
+                                <ol class="tracks-list">
+                                    {% for track in recommended_tracks %}
+                                    <li style="clear: both;">
+                                        <table width="100%">
+                                            <tr>
+                                                <td style="width: 90%;"><strong>{{ loop.index }}. {{ track['song']
+                                                        }}</strong></td>
+                                                <td style="width: 10%; text-align: right;">
+                                                    <a href="{{ track['link'] }}" class="play-button" target="_blank">
+                                                        <div class="circle-background">
+                                                            <i class="fas fa-play play-icon"></i>
+                                                        </div>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                        <span>Artist(s): {{ track['artist'] }}</span>
+                                    </li>
+                                    {% endfor %}
+                                </ol>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Include Bootstrap JS and jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+
+</html>
